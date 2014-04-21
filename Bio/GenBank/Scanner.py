@@ -118,7 +118,7 @@ class InsdcScanner(object):
             line = line.rstrip()
             if line in self.FEATURE_START_MARKERS:
                 if self.debug:
-                    print("Found header table")
+                    print("Found feature table")
                 break
             #if line[:self.HEADER_WIDTH]==self.FEATURE_START_MARKER[:self.HEADER_WIDTH]:
             #    if self.debug : print("Found header table (?)")
@@ -201,7 +201,7 @@ class InsdcScanner(object):
                 while line[:self.FEATURE_QUALIFIER_INDENT] == self.FEATURE_QUALIFIER_SPACER \
                         or line.rstrip() == "":  # cope with blank lines in the midst of a feature
                     #Use strip to remove any harmless trailing white space AND and leading
-                    #white space (e.g. out of spec files with too much intentation)
+                    #white space (e.g. out of spec files with too much indentation)
                     feature_lines.append(line[self.FEATURE_QUALIFIER_INDENT:].strip())
                     line = self.handle.readline()
                 features.append(self.parse_feature(feature_key, feature_lines))

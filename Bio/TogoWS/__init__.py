@@ -37,7 +37,6 @@ from Bio._py3k import _binary_to_string_handle, _as_bytes
 
 #Importing these functions with leading underscore as not intended for reuse
 from Bio._py3k import urlopen as _urlopen
-from Bio._py3k import urlencode as _urlencode
 from Bio._py3k import quote as _quote
 
 #Constant
@@ -163,10 +162,14 @@ def search_count(db, query):
         import warnings
         warnings.warn("TogoWS search does not officially support database '%s'. "
                       "See %s/search/ for options." % (db, _BASE_URL))
-    handle = _open(_BASE_URL + "/search/%s/%s/count"
-                   % (db, _quote(query)))
-    count = int(handle.read().strip())
+    url = _BASE_URL + "/search/%s/%s/count" % (db, _quote(query))
+    handle = _open(url)
+    data = handle.read()
     handle.close()
+    try:
+        count = int(data.strip())
+    except ValueError:
+        raise ValueError("Expected an integer from URL %s, got: %r" % (url, data))
     return count
 
 
@@ -301,10 +304,10 @@ def convert(data, in_format, out_format):
     #TODO - Should we just accept a string not a handle? What about a filename?
     if hasattr(data, "read"):
         #Handle
-        return _open(url, post={"data": data.read()})
+        return _open(url, post=data.read())
     else:
         #String
-        return _open(url, post={"data": data})
+        return _open(url, post=data)
 
 
 def _open(url, post=None):
@@ -326,7 +329,7 @@ def _open(url, post=None):
 
     #print(url)
     if post:
-        handle = _urlopen(url, _as_bytes(_urlencode(post)))
+        handle = _urlopen(url, _as_bytes(post))
     else:
         handle = _urlopen(url)
 
