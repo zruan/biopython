@@ -430,7 +430,7 @@ def _G_test(site_counts):
         G += obs*log(obs/ex)
     G *= 2
     #return 1-chi2.cdf(G, 1) # only 1 dof for 2x2 table
-    return chisqprob(G, 1)
+    return chisqprob(G, 1), site_counts
 
 
 if __name__ == "__main__":
