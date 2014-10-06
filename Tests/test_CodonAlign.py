@@ -176,7 +176,7 @@ class Test_MK(unittest.TestCase):
                 p = SeqIO.index(TEST_ALIGN_FILE7[0][0], 'fasta', alphabet=IUPAC.IUPACUnambiguousDNA())
                 pro_aln = AlignIO.read(TEST_ALIGN_FILE7[0][1], 'clustal', alphabet=IUPAC.protein)
                 codon_aln = CodonAlign.build(pro_aln, p)
-                self.assertAlmostEquals(round(CodonAlign.mktest([codon_aln[1:12], codon_aln[12:16], codon_aln[16:]]), 4), 0.0021, places=4)
+                self.assertAlmostEquals(round(CodonAlign.mktest([codon_aln[1:12], codon_aln[12:16], codon_aln[16:]])[0], 4), 0.0021, places=4)
             else:
                 warnings.warn('Numpy not installed. Skip MK test.')
 
